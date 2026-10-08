@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tally Accounting Software</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>📊 TALLY</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#" onclick="showSection('dashboard')">Dashboard</a></li>
+                <li><a href="#" onclick="showSection('company-setup')">Company Setup</a></li>
+                
+                <li class="menu-title">Masters</li>
+                <li><a href="#" onclick="showSection('ledger-master')">Ledger Master</a></li>
+                <li><a href="#" onclick="showSection('party-master')">Party Master</a></li>
+                <li><a href="#" onclick="showSection('item-master')">Item Master</a></li>
+                
+                <li class="menu-title">Vouchers</li>
+                <li><a href="#" onclick="showSection('purchase-voucher')">Purchase Voucher</a></li>
+                <li><a href="#" onclick="showSection('sales-voucher')">Sales Voucher</a></li>
+                <li><a href="#" onclick="showSection('receipt-voucher')">Receipt Voucher</a></li>
+                <li><a href="#" onclick="showSection('payment-voucher')">Payment Voucher</a></li>
+                <li><a href="#" onclick="showSection('journal-voucher')">Journal Voucher</a></li>
+                <li><a href="#" onclick="showSection('debit-note')">Debit Note</a></li>
+                <li><a href="#" onclick="showSection('credit-note')">Credit Note</a></li>
+                
+                <li class="menu-title">Invoices</li>
+                <li><a href="#" onclick="showSection('sales-invoice')">Sales Invoice</a></li>
+                <li><a href="#" onclick="showSection('purchase-invoice')">Purchase Invoice</a></li>
+                <li><a href="#" onclick="showSection('delivery-note')">Delivery/Challan</a></li>
+                
+                <li class="menu-title">Reports</li>
+                <li><a href="#" onclick="showSection('trial-balance')">Trial Balance</a></li>
+                <li><a href="#" onclick="showSection('profit-loss')">Profit & Loss</a></li>
+                <li><a href="#" onclick="showSection('balance-sheet')">Balance Sheet</a></li>
+                <li><a href="#" onclick="showSection('ledger-report')">Ledger Report</a></li>
+                <li><a href="#" onclick="showSection('daybook')">Day Book</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="top-bar">
+                <h1 id="page-title">Dashboard</h1>
+                <div class="user-info">
+                    <span id="company-name">Company</span> | 
+                    <span id="current-date"></span>
+                </div>
+            </header>
+
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <h3>Total Debit</h3>
+                        <p class="amount" id="total-debit">₹0.00</p>
+                    </div>
+                    <div class="card">
+                        <h3>Total Credit</h3>
+                        <p class="amount" id="total-credit">₹0.00</p>
+                    </div>
+                    <div class="card">
+                        <h3>Cash in Hand</h3>
+                        <p class="amount" id="cash-balance">₹0.00</p>
+                    </div>
+                    <div class="card">
+                        <h3>Bank Balance</h3>
+                        <p class="amount" id="bank-balance">₹0.00</p>
+                    </div>
+                </div>
+                <div class="recent-transactions">
+                    <h3>Recent Transactions</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Ledger</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-trans-body">
+                            <tr><td colspan="5">No transactions yet</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Company Setup Section -->
+            <section id="company-setup" class="section">
+                <h2>Company Setup</h2>
+                <form id="company-form" class="form-grid">
+                    <div class="form-group">
+                        <label>Company Name</label>
+                        <input type="text" id="company-name-input" placeholder="Enter company name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <textarea id="company-address" placeholder="Enter address"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" id="company-phone" placeholder="Enter phone number">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="company-email" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label>GST Number</label>
+                        <input type="text" id="company-gst" placeholder="Enter GST number">
+                    </div>
+                    <div class="form-group">
+                        <label>PAN</label>
+                        <input type="text" id="company-pan" placeholder="Enter PAN">
+                    </div>
+                    <div class="form-group">
+                        <label>Financial Year Start</label>
+                        <input type="date" id="fy-start">
+                    </div>
+                    <div class="form-group">
+                        <label>Financial Year End</label>
+                        <input type="date" id="fy-end">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Company Setup</button>
+                </form>
+            </section>
+
+            <!-- Ledger Master Section -->
+            <section id="ledger-master" class="section">
+                <h2>Ledger Master</h2>
+                <button class="btn btn-primary" onclick="showForm('ledger-form')">+ Create New Ledger</button>
+                <form id="ledger-form" class="form-grid" style="display:none;">
+                    <div class="form-group">
+                        <label>Ledger Name</label>
+                        <input type="text" id="ledger-name" placeholder="Enter ledger name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Ledger Type</label>
+                        <select id="ledger-type" required>
+                            <option value="">Select Type</option>
+                            <option value="Asset">Asset</option>
+                            <option value="Liability">Liability</option>
+                            <option value="Capital">Capital</option>
+                            <option value="Income">Income</option>
+                            <option value="Expense">Expense</option>
+                            <option value="Bank">Bank</option>
+                            <option value="Cash">Cash</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Opening Balance</label>
+                        <input type="number" id="opening-balance" placeholder="0.00" step="0.01">
+                    </div>
+                    <button type="submit" class="btn btn-success">Add Ledger</button>
+                </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Ledger Name</th>
+                            <th>Type</th>
+                            <th>Opening Balance</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ledger-list">
+                        <tr><td colspan="4">No ledgers created</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Party Master Section -->
+            <section id="party-master" class="section">
+                <h2>Party Master (Customers & Suppliers)</h2>
+                <button class="btn btn-primary" onclick="showForm('party-form')">+ Add New Party</button>
+                <form id="party-form" class="form-grid" style="display:none;">
+                    <div class="form-group">
+                        <label>Party Name</label>
+                        <input type="text" id="party-name" placeholder="Enter party name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Party Type</label>
+                        <select id="party-type" required>
+                            <option value="">Select Type</option>
+                            <option value="Customer">Customer</option>
+                            <option value="Supplier">Supplier</option>
+                            <option value="Both">Both</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <textarea id="party-address" placeholder="Enter address"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" id="party-phone" placeholder="Enter phone">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="party-email" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label>GST Number</label>
+                        <input type="text" id="party-gst" placeholder="Enter GST">
+                    </div>
+                    <div class="form-group">
+                        <label>Opening Balance</label>
+                        <input type="number" id="party-opening-balance" placeholder="0.00" step="0.01">
+                    </div>
+                    <button type="submit" class="btn btn-success">Add Party</button>
+                </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Party Name</th>
+                            <th>Type</th>
+                            <th>Phone</th>
+                            <th>GST</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="party-list">
+                        <tr><td colspan="5">No parties added</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Item Master Section -->
+            <section id="item-master" class="section">
+                <h2>Item/Product Master</h2>
+                <button class="btn btn-primary" onclick="showForm('item-form')">+ Add New Item</button>
+                <form id="item-form" class="form-grid" style="display:none;">
+                    <div class="form-group">
+                        <label>Item Name</label>
+                        <input type="text" id="item-name" placeholder="Enter item name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Item Code</label>
+                        <input type="text" id="item-code" placeholder="Enter item code" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Unit</label>
+                        <select id="item-unit" required>
+                            <option value="">Select Unit</option>
+                            <option value="Pcs">Pieces</option>
+                            <option value="Kg">Kilogram</option>
+                            <option value="Ltr">Liter</option>
+                            <option value="Mtr">Meter</option>
+                            <option value="Box">Box</option>
+                            <option value="Pack">Pack</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>HSN Code</label>
+                        <input type="text" id="item-hsn" placeholder="Enter HSN code">
+                    </div>
+                    <div class="form-group">
+                        <label>GST %</label>
+                        <input type="number" id="item-gst" placeholder="0" step="0.01" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Opening Stock</label>
+                        <input type="number" id="item-opening-stock" placeholder="0" step="0.01">
+                    </div>
+                    <button type="submit" class="btn btn-success">Add Item</button>
+                </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Code</th>
+                            <th>Unit</th>
+                            <th>HSN</th>
+                            <th>GST %</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="item-list">
+                        <tr><td colspan="6">No items added</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Purchase Voucher Section -->
+            <section id="purchase-voucher" class="section">
+                <h2>Purchase Voucher</h2>
+                <form id="purchase-form" class="form-grid">
+                    <div class="form-group">
+                        <label>Voucher Date</label>
+                        <input type="date" id="purchase-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Voucher No.</label>
+                        <input type="text" id="purchase-no" placeholder="Auto-generated" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Party Name</label>
+                        <select id="purchase-party" required>
+                            <option value="">Select Party</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ledger</label>
+                        <select id="purchase-ledger" required>
+                            <option value="">Select Ledger</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input type="number" id="purchase-amount" placeholder="0.00" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>GST %</label>
+                        <input type="number" id="purchase-gst-rate" placeholder="0" step="0.01" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Description/Narration</label>
+                        <textarea id="purchase-narration" placeholder="Enter description"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Save Purchase Voucher</button>
+                </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Voucher No.</th>
+                            <th>Party</th>
+                            <th>Amount</th>
+                            <th>GST</th>
+                            <th>Total</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="purchase-list">
+                        <tr><td colspan="7">No purchases recorded</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Sales Voucher Section -->
+            <section id="sales-voucher" class="section">
+                <h2>Sales Voucher</h2>
+                <form id="sales-form" class="form-grid">
+                    <div class="form-group">
+                        <label>Voucher Date</label>
+                        <input type="date" id="sales-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Voucher No.</label>
+                        <input type="text" id="sales-no" placeholder="Auto-generated" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Party Name</label>
+                        <select id="sales-party" required>
+                            <option value="">Select Party</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ledger</label>
+                        <select id="sales-ledger" required>
+                            <option value="">Select Ledger</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input type="number" id="sales-amount" placeholder="0.00" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>GST %</label>
+                        <input type="number" id="sales-gst-rate" placeholder="0" step="0.01" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Description/Narration</label>
+                        <textarea id="sales-narration" placeholder="Enter description"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Save Sales Voucher</button>
+                </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Voucher No.</th>
+                            <th>Party</th>
+                            <th>Amount</th>
+                            <th>GST</th>
+                            <th>Total</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sales-list">
+                        <tr><td colspan="7">No sales recorded</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Receipt Voucher Section -->
+            <section id="receipt-voucher" class="section">
+                <h2>Receipt Voucher</h2>
+                <form id="receipt-form" class="form-grid">
+                    <div class="form-group">
+                        <label>Voucher Date</label>
+                        <input type="date" id="receipt-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Voucher No.</label>
+                        <input type="text" id="receipt-no" placeholder="Auto-generated" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>From Party</label>
+                        <select id="receipt-party" required>
+                            <option value="">Select Party</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Receipt Mode</label>
+                        <select id="receipt-mode" required>
+                            <option value="">Select Mode</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Cheque">Cheque</option>
+                            <option value="Bank Transfer">Bank Transfer</option>
+                            <option value="Online">Online</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input type="number" id="receipt-amount" placeholder="0.00" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Reference No.</label>
+                        <input type="text" id="receipt-ref" placeholder="Cheque/Reference number">
+                    </div>
+                    <div class="form-group">
+                        <label>Description/Narration</label>
+                        <textarea id="receipt-narration" placeholder="Enter description"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Save Receipt</button>
+                </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Voucher No.</th>
+                            <th>From Party</th>
+                            <th>Mode</th>
+                            <th>Amount</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="receipt-list">
+                        <tr><td colspan="6">No receipts recorded</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Payment Voucher Section -->
+            <section id="payment-voucher" class="section">
+                <h2>Payment Voucher</h2>
+                <form id="payment-form" class="form-grid">
+                    <div class="form-group">
+                        <label>Voucher Date</label>
+                        <input type="date" id="payment-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Voucher No.</label>
+                        <input type="text" id="payment-no" placeholder="Auto-generated" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>To Party</label>
+                        <select id="payment-party" required>
+                            <option value="">Select Party</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Payment Mode</label>
+                        <select id="payment-mode" required>
+                            <option value="">Select Mode</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Cheque">Cheque</option>
+                            <option value="Bank Transfer">Bank Transfer</option>
+                            <option value="Online">Online</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input type="number" id="payment-amount" placeholder="0.00" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Reference No.</label>
+                        <input type="text" id="payment-ref" placeholder="Cheque/Reference number">
+                    </div>
+                    <div class="form-group">
+                        <label>Description/Narration</label>
+                        <textarea id="payment-narration" placeholder="Enter description"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Save Payment</button>
+                </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Voucher No.</th>
+                            <th>To Party</th>
+                            <th>Mode</th>
+                            <th>Amount</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="payment-list">
+                        <tr><td colspan="6">No payments recorded</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Journal Voucher Section -->
+            <section id="journal-voucher" class="section">
+                <h2>Journal Voucher</h2>
+                <form id="journal-form" class="form-grid">
+                    <div class="form-group">
+                        <label>Voucher Date</label>
+                        <input type="date" id="journal-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Voucher No.</label>
+                        <input type="text" id="journal-no" placeholder="Auto-generated" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Debit Ledger</label>
+                        <select id="journal-debit-ledger" required>
+                            <option value="">Select Ledger</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Debit Amount</label>
+                        <input type="number" id="journal-debit-amount" placeholder="0.00" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Credit Ledger</label>
+                        <select id="journal-credit-ledger" required>
+                            <option value="">Select Ledger</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Credit Amount</label>
+                        <input type="number" id="journal-credit-amount" placeholder="0.00" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description/Narration</label>
+                        <textarea id="journal-narration" placeholder="Enter description"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Save Journal Entry</button>
+                </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Voucher No.</th>
+                            <th>Debit Ledger</th>
+                            <th>Amount</th>
+                            <th>Credit Ledger</th>
+                            <th>Amount</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="journal-list">
+                        <tr><td colspan="7">No journal entries recorded</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Debit Note Section -->
+            <section id="debit-note" class="section">
+                <h2>Debit Note</h2>
+                <form id="debit-form" class="form-grid">
+                    <div class="form-group">
+                        <label>Note Date</label>
+                        <input type="date" id="debit-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Note No.</label>
+                        <input type="text" id="debit-no" placeholder="Auto-generated" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Party Name</label>
+                        <select id="debit-party" required>
+                            <option value="">Select Party</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Item/Description</label>
+                        <input type="text" id="debit-item" placeholder="Item or description" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input type="number" id="debit-amount" placeholder="0.00" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Reason</label>
+                        <textarea id="debit-reason" placeholder="Reason for debit note"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>GST %</label>
+                        <input type="number" id="debit-gst-rate" placeholder="0" step="0.01" value="0">
+                    </div>
+                    <button type="submit" class="btn btn-success">Save Debit Note</button>
+                </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Note No.</th>
+                            <th>Party</th>
+                            <th>Item</th>
+                            <th>Amount</th>
+                            <th>Reason</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="debit-list">
+                        <tr><td colspan="7">No debit notes recorded</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Credit Note Section -->
+            <section id="credit-note" class="section">
+                <h2>Credit Note</h2>
+                <form id="credit-form" class="form-grid">
+                    <div class="form-group">
+                        <label>Note Date</label>
+                        <input type="date" id="credit-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Note No.</label>
+                        <input type="text" id="credit-no" placeholder="Auto-generated" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Party Name</label>
+                        <select id="credit-party" required>
+                            <option value="">Select Party</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Item/Description</label>
+                        <input type="text" id="credit-item" placeholder="Item or description" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input type="number" id="credit-amount" placeholder="0.00" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Reason</label>
+                        <textarea id="credit-reason" placeholder="Reason for credit note"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>GST %</label>
+                        <input type="number" id="credit-gst-rate" placeholder="0" step="0.01" value="0">
+                    </div>
+                    <button type="submit" class="btn btn-success">Save Credit Note</button>
+                </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Note No.</th>
+                            <th>Party</th>
+                            <th>Item</th>
+                            <th>Amount</th>
+                            <th>Reason</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="credit-list">
+                        <tr><td colspan="7">No credit notes recorded</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Sales Invoice Section -->
+            <section id="sales-invoice" class="section">
+                <h2>Sales Invoice</h2>
+                <form id="sales-invoice-form" class="form-grid">
+                    <div class="form-group">
+                        <label>Invoice Date</label>
+                        <input type="date" id="sales-inv-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Invoice No.</label>
+                        <input type="text" id="sales-inv-no" placeholder="Auto-generated" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Customer</label>
+                        <select id="sales-inv-customer" required>
+                            <option value="">Select Customer</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Item</label>
+                        <select id="sales-inv-item" required>
+                            <option value="">Select Item</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <input type="number" id="sales-inv-qty" placeholder="0" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Rate</label>
+                        <input type="number" id="sales-inv-rate" placeholder="0.00" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Discount %</label>
+                        <input type="number" id="sales-inv-discount" placeholder="0" step="0.01" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Payment Terms</label>
+                        <select id="sales-inv-terms">
+                            <option value="Immediate">Immediate</option>
+                            <option value="30 Days">30 Days</option>
+                            <option value="60 Days">60 Days</option>
+                            <option value="90 Days">90 Days</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <textarea id="sales-inv-notes" placeholder="Invoice notes"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Save Invoice</button>
+                    <button type="button" class="btn btn-secondary" onclick="printInvoice('sales')">Print Invoice</button>
+                </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Invoice No.</th>
+                            <th>Customer</th>
+                            <th>Item</th>
+                            <th>Qty</th>
+                            <th>Amount</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sales-invoice-list">
+                        <tr><td colspan="7">No invoices created</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Purchase Invoice Section -->
+            <section id="purchase-invoice" class="section">
+                <h2>Purchase Invoice</h2>
+                <form id="purchase-invoice-form" class="form-grid">
+                    <div class="form-group">
+                        <label>Invoice Date</label>
+                        <input type="date" id="purchase-inv-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Invoice No.</label>
+                        <input type="text" id="purchase-inv-no" placeholder="Supplier invoice number" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Supplier</label>
+                        <select id="purchase-inv-supplier" required>
+                            <option value="">Select Supplier</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Item</label>
+                        <select id="purchase-inv-item" required>
+                            <option value="">Select Item</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <input type="number" id="purchase-inv-qty" placeholder="0" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Rate</label>
+                        <input type="number" id="purchase-inv-rate" placeholder="0.00" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Discount %</label>
+                        <input type="number" id="purchase-inv-discount" placeholder="0" step="0.01" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Payment Terms</label>
+                        <select id="purchase-inv-terms">
+                            <option value="Immediate">Immediate</option>
+                            <option value="30 Days">30 Days</option>
+                            <option value="60 Days">60 Days</option>
+                            <option value="90 Days">90 Days</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <textarea id="purchase-inv-notes" placeholder="Invoice notes"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Save Invoice</button>
+                    <button type="button" class="btn btn-secondary" onclick="printInvoice('purchase')">Print Invoice</button>
+                </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Invoice No.</th>
+                            <th>Supplier</th>
+                            <th>Item</th>
+                            <th>Qty</th>
+                            <th>Amount</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="purchase-invoice-list">
+                        <tr><td colspan="7">No invoices created</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Delivery Note Section -->
+            <section id="delivery-note" class="section">
+                <h2>Delivery Note / Challan</h2>
+                <form id="delivery-form" class="form-grid">
+                    <div class="form-group">
+                        <label>Delivery Date</label>
+                        <input type="date" id="delivery-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Challan No.</label>
+                        <input type="text" id="delivery-no" placeholder="Auto-generated" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Customer/Party</label>
+                        <select id="delivery-party" required>
+                            <option value="">Select Party</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Item</label>
+                        <select id="delivery-item" required>
+                            <option value="">Select Item</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <input type="number" id="delivery-qty" placeholder="0" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Delivery Address</label>
+                        <textarea id="delivery-address" placeholder="Enter delivery address"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Driver Name</label>
+                        <input type="text" id="delivery-driver" placeholder="Enter driver name">
+                    </div>
+                    <div class="form-group">
+                        <label>Vehicle No.</label>
+                        <input type="text" id="delivery-vehicle" placeholder="Enter vehicle number">
+                    </div>
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <textarea id="delivery-notes" placeholder="Additional notes"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Save Challan</button>
+                    <button type="button" class="btn btn-secondary" onclick="printChallan()">Print Challan</button>
+                </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Challan No.</th>
+                            <th>Party</th>
+                            <th>Item</th>
+                            <th>Qty</th>
+                            <th>Driver</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="delivery-list">
+                        <tr><td colspan="7">No delivery notes created</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Trial Balance Section -->
+            <section id="trial-balance" class="section">
+                <h2>Trial Balance</h2>
+                <div class="report-controls">
+                    <label>As on Date:</label>
+                    <input type="date" id="trial-date" onchange="generateTrialBalance()">
+                    <button class="btn btn-primary" onclick="generateTrialBalance()">Generate</button>
+                    <button class="btn btn-secondary" onclick="printReport('trial-balance')">Print</button>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Ledger Name</th>
+                            <th>Type</th>
+                            <th>Debit (₹)</th>
+                            <th>Credit (₹)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="trial-balance-body">
+                        <tr><td colspan="4">Generate trial balance first</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Profit & Loss Section -->
+            <section id="profit-loss" class="section">
+                <h2>Profit & Loss Statement</h2>
+                <div class="report-controls">
+                    <label>From Date:</label>
+                    <input type="date" id="pl-from-date">
+                    <label>To Date:</label>
+                    <input type="date" id="pl-to-date" onchange="generateProfitLoss()">
+                    <button class="btn btn-primary" onclick="generateProfitLoss()">Generate</button>
+                    <button class="btn btn-secondary" onclick="printReport('profit-loss')">Print</button>
+                </div>
+                <div id="profit-loss-report"></div>
+            </section>
+
+            <!-- Balance Sheet Section -->
+            <section id="balance-sheet" class="section">
+                <h2>Balance Sheet</h2>
+                <div class="report-controls">
+                    <label>As on Date:</label>
+                    <input type="date" id="bs-date" onchange="generateBalanceSheet()">
+                    <button class="btn btn-primary" onclick="generateBalanceSheet()">Generate</button>
+                    <button class="btn btn-secondary" onclick="printReport('balance-sheet')">Print</button>
+                </div>
+                <div id="balance-sheet-report"></div>
+            </section>
+
+            <!-- Ledger Report Section -->
+            <section id="ledger-report" class="section">
+                <h2>Ledger Report</h2>
+                <div class="report-controls">
+                    <label>Select Ledger:</label>
+                    <select id="ledger-report-select" onchange="generateLedgerReport()">
+                        <option value="">Select Ledger</option>
+                    </select>
+                    <label>From Date:</label>
+                    <input type="date" id="ledger-from-date">
+                    <label>To Date:</label>
+                    <input type="date" id="ledger-to-date" onchange="generateLedgerReport()">
+                    <button class="btn btn-primary" onclick="generateLedgerReport()">Generate</button>
+                    <button class="btn btn-secondary" onclick="printReport('ledger-report')">Print</button>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Voucher No.</th>
+                            <th>Description</th>
+                            <th>Debit</th>
+                            <th>Credit</th>
+                            <th>Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ledger-report-body">
+                        <tr><td colspan="6">Generate report first</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Day Book Section -->
+            <section id="daybook" class="section">
+                <h2>Day Book</h2>
+                <div class="report-controls">
+                    <label>Select Date:</label>
+                    <input type="date" id="daybook-date" onchange="generateDayBook()">
+                    <button class="btn btn-primary" onclick="generateDayBook()">Generate</button>
+                    <button class="btn btn-secondary" onclick="printReport('daybook')">Print</button>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Voucher Type</th>
+                            <th>Voucher No.</th>
+                            <th>Ledger</th>
+                            <th>Debit</th>
+                            <th>Credit</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody id="daybook-body">
+                        <tr><td colspan="7">Generate day book first</td></tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
